@@ -1,0 +1,39 @@
+name: Update translations on the main branch
+
+on:
+  push:
+    paths:
+      - 'doc/**/*'
+    branches:
+      - main
+jobs:
+  push-pot:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup Python environment
+      uses: actions/setup-python@v2
+
+    - name: Setup Python requirements
+      run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install git+https://${{secrets.ACCESS_TOKEN}}@github.com/MailRuCloudSolutions/mcs-docs-theme.git
+
+    - name: Build pot files
+      run: python -m sphinx doc locale/ru -b gettext
+
+    - name: Push Pot-files to crowdin
+      uses: crowdin/github-action@1.1.0
+      with:
+        config: 'crowdin.yaml'
+        upload_sources: true
+        upload_translations: true
+        import_eq_suggestions: true
+      env:
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        CROWDIN_PERSONAL_TOKEN: ${{secrets.CROWDIN_PERSONAL_TOKEN}}

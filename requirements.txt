@@ -1,0 +1,3 @@
+Sphinx==4.1.1
+sphinx-intl==2.0.1
+polib==1.1.1
