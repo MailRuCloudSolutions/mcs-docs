@@ -21,14 +21,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install git+https://${{secrets.ACCESS_TOKEN}}@github.com/MailRuCloudSolutions/mcs-docs-theme.git
+#          pip install git+https://${{secrets.ACCESS_TOKEN}}@github.com/MailRuCloudSolutions/mcs-docs-theme.git
 
-      - name: Build the documentation
-        run: python -m sphinx doc output -c .
+#      - name: Build the documentation
+#        run: python -m sphinx doc output -c .
 
 #      - name: Remove the directory
 #        run: aws s3 rm ${{env.S3_DESTINATION }}/help/${GITHUB_REF#refs/heads/} --endpoint-url=${{ env.S3_ENDPOINT_URL}} --recursive
 
-#      - name: Copy the documentation to AWS
-#        run: aws s3 cp output ${{env.S3_DESTINATION}}/help/${{GITHUB_REF#refs/heads/}} --endpoint-url=$S3_ENDPOINT_URL --recursive
-      - run: aws s3 ls --endpoint-url=${{ env.S3_ENDPOINT_URL }}
+      - run: aws s3 ls s3://mcs-help-test --endpoint-url=${S3_ENDPOINT_URL} --region ru-msk
